@@ -4,8 +4,14 @@
 #include "esp_system.h"
 #include "esp_spi_flash.h"
 
-#include "test.h"
+#define ESP32
+#include "esp32-hal.h"
+#include "FastLED.h"
 
+
+extern "C" {
+  void app_main();
+}
 
 
 void app_main()
