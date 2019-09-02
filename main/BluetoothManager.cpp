@@ -1,9 +1,12 @@
 
 #include "BluetoothManager.h"
 #include "BLE2902.h"
-#include "esp_log.h"
 #include "esp_timer.h"
 #include "events.h"
+
+#define LOG_LOCAL_LEVEL ESP_LOG_INFO
+#include "esp_log.h"
+
 
 #define BLM_LOG_TAG "Buzzer-BluetoothManager"
 
@@ -30,17 +33,17 @@ BluetoothManager::BluetoothManager() {
 
     remote_event_ = service_->createCharacteristic(kRemoteEventCharacteristicUUID, BLECharacteristic::PROPERTY_WRITE);
     remote_event_->setAccessPermissions(ESP_GATT_PERM_WRITE_ENCRYPTED);
+    remote_event_->setCallbacks(new RemoteEventCharacteristicCallbacks());
 
     service_->start();
 
     advertising_ = server_->getAdvertising();
-    BLEAdvertisementData advertisement_data;
-    advertisement_data.setName("Pirate Buzzer");
-    advertising_->setAdvertisementData(advertisement_data);
     advertising_->addServiceUUID(kServiceUUID);
 
     security_ = new BLESecurity();
     security_->setStaticPIN(123456); // TODO change to bonding
+    
+    advertising_->start();
     ESP_LOGI(BLM_LOG_TAG, "server listening on %s", BLEDevice::getAddress().toString().c_str());
 
     ESP_ERROR_CHECK(esp_event_handler_register(BUZZER_EVENT, TRIGGER_UP_EVENT, blm_trigger_up_event_handler, this));

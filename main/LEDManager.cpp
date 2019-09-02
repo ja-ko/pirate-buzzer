@@ -5,6 +5,9 @@
 #include "esp_timer.h"
 #include "events.h"
 
+#define LOG_LOCAL_LEVEL ESP_LOG_INFO
+#include "esp_log.h"
+
 LEDManager* ledManager;
 
 void led_manager_animate(void* arg) {
@@ -24,6 +27,7 @@ void ledmanager_setup() {
 
 void ledmanager_event_handler(void* handler_arg, esp_event_base_t base, int id, void* data) {
     LEDManager* manager = static_cast<LEDManager*>(handler_arg);
+    ESP_LOGD("Buzzer-LEDManager", "handling event with base %s and id %d", base, id);
     switch(id) {
         case TRIGGER_DOWN_EVENT:
             manager->onBuzzerDown();
@@ -46,6 +50,7 @@ void ledmanager_event_handler(void* handler_arg, esp_event_base_t base, int id, 
 
 LEDManager::LEDManager() {
     FastLED.addLeds<LED_TYPE, DATA_PIN, GRB>(leds, NUM_LEDS);
+    FastLED.setMaxPowerInVoltsAndMilliamps(5,500);
 
     ESP_ERROR_CHECK(esp_event_handler_register(BUZZER_EVENT, ESP_EVENT_ANY_ID, ledmanager_event_handler, this));
 }

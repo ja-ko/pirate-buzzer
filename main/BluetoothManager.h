@@ -12,8 +12,7 @@ public:
 };
 
 class RemoteEventCharacteristicCallbacks: public BLECharacteristicCallbacks {
-	virtual void onRead(BLECharacteristic* pCharacteristic);
-	virtual void onWrite(BLECharacteristic* pCharacteristic);
+	virtual void onWrite(BLECharacteristic* pCharacteristic) override;
 };
 
 class BluetoothManager: public BLEServerCallbacks {
