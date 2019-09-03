@@ -1,0 +1,12 @@
+pirate-buzzer 
+Copyright 2019 Jannik Kolodziej
+
+This product includes software from the esp32-snippets (Apache 2.0)
+https://github.com/nkolban/esp32-snippets
+
+This product includes software from FastLED (MIT)
+https://github.com/FastLED/FastLED
+
+This product includes software from Espressif Systems (Shanghai) PTE LTD licensed under Apache 2.0
+
+This product includes software from Arduino Team licensed under LGPL-2.1
